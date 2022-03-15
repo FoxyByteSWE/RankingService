@@ -31,7 +31,7 @@ class TestS3Connection(unittest.TestCase):
 		response = self.client.parseKeyPhrase({'KeyPhrases': [{'Score': 0.9997683167457581, 'Text': 'Test', 'BeginOffset': 0, 'EndOffset': 14}], 'ResponseMetadata': {'RequestId': 'a935c673-1076-4567-8d75-0f55ccb0754c', 'HTTPStatusCode': 200, 'HTTPHeaders': {'x-amzn-requestid': 'a935c673-1076-4567-8d75-0f55ccb0754c', 'content-type': 'application/x-amz-json-1.1', 'content-length': '100', 'date': 'Sat, 24 Sep 2022 12:54:04 GMT'}, 'RetryAttempts': 0}})
 		self.assertIsInstance(response, list)
 		for item in response:
-			assertIsInstance(iitem, dict)
+			self.assertIsInstance(item, dict)
 		self.assertIn("Confidence", response[0])
 		self.assertIn("Text", response[0])
 
