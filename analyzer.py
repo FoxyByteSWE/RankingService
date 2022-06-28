@@ -5,6 +5,7 @@ import logging
 import boto3
 import pprint
 from botocore.exceptions import ClientError
+import datetime
 
 from restaurant import Restaurant, Media, json2Restaurants
 
@@ -67,20 +68,49 @@ def rank(restaurants):
 
 	for r in restaurants:
 		pos = neg = neu = mix = 0
+		weight_list = []
+
 		for m in r.medias:
+			now = datetime.datetime.now()
+			post_taken_at = datetime.datetime(m.TakenAtTime[0], m.TakenAtTime[1], m.TakenAtTime[2], m.TakenAtTime[3], m.TakenAtTime[4], m.TakenAtTime[5])
+			age = (now - post_taken_at).days
+			print(age)
+
+			if age <= 30:
+				weight = 1
+			elif age <= 90:
+				weight = 0.9
+			elif age <= 180:
+				weight = 0.7
+			elif age <= 360:
+				weight = 0.5
+			elif age <= 720:
+				weight = 0.2
+			else:
+				weight = 0
+
 			print(m.CaptionText)
 			score = analyzeText(m.CaptionText)
-			pos += score["Positive"]
-			neg += score["Negative"]
-			#neu += score["Neutral"]
-			#mix += score["Mixed"]
-		pos /= len(r.medias)
-		neg /= len(r.medias)
-		#neu /= len(r.medias)
-		#mix /= len(r.medias)
+			pos += score["Positive"] * weight
+			neg += score["Negative"] * weight
+			#neu += score["Neutral"] * weight
+			#mix += score["Mixed"] * weight
+			weight_list.append(weight)
+
+		if sum(weight_list) == 0:
+			pos = neg = 0
+		else:
+			pos /= sum(weight_list)
+			neg /= sum(weight_list)
+			#neu /= sum(weight_list)
+			#mix /= sum(weight_list)
+
 		dict.update({ str(r.pk) : pos-neg })
 
 	return dict
+
+#def subtractDate(d1, d2):
+	#return (d1[0]-d2[0] * 365
 
 def main():
 	test = []
