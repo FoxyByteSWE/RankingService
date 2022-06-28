@@ -6,7 +6,7 @@ import boto3
 import pprint
 from botocore.exceptions import ClientError
 
-#from media import Media, json2Media
+from restaurant import Restaurant, Media, json2Restaurants
 
 BUCKET_NAME = "foxybyteswe"
 
@@ -61,38 +61,24 @@ def detectLabels(url):
 	response = parseImageResponse(response)
 	return response
 
-def rank(medias):
-
-	list = []
-	for m in medias:
-		if not list:
-			list.append([m])
-		else:
-			already_exists = False
-			for m_list in list:
-				if m.pk == m_list[0].pk:
-					m_list.append(m)
-					already_exists = True
-			if already_exists == False:
-				list.append([m])
+def rank(restaurants):
 
 	dict = {}
 
-	for m_list in list:
+	for r in restaurants:
 		pos = neg = neu = mix = 0
-		for m in m_list:
+		for m in r.medias:
 			print(m.CaptionText)
 			score = analyzeText(m.CaptionText)
 			pos += score["Positive"]
 			neg += score["Negative"]
-			neu += score["Neutral"]
-			mix += score["Mixed"]
-		pos /= len(m_list)
-		neg /= len(m_list)
-		neu /= len(m_list)
-		mix /= len(m_list)
-		r = pos - neg
-		dict.update({ str(m_list[0].pk) : r })
+			#neu += score["Neutral"]
+			#mix += score["Mixed"]
+		pos /= len(r.medias)
+		neg /= len(r.medias)
+		#neu /= len(r.medias)
+		#mix /= len(r.medias)
+		dict.update({ str(r.pk) : pos-neg })
 
 	return dict
 
@@ -101,8 +87,8 @@ def main():
 	test.append(analyzeText("Molto bello!"))
 	test.append(analyzeText("Brutto"))
 
-	#medias = json2Media((str(sys.path[0]))+"/data/locationsData.json")
-	#pprint.pprint(rank(medias))
+	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
+	pprint.pprint(rank(restaurants))
 
 	detectLabels("https://instagram.ffco2-1.fna.fbcdn.net/v/t51.2885-15/11249882_966261376755731_963030927_n.jpg?se=8&stp=dst-jpg_e35&_nc_ht=instagram.ffco2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=9lNYboVO5K0AX90TSMu&edm=AKmAybEBAAAA&ccb=7-5&ig_cache_key=MTIyOTEzNTQ0NTAwMDU1ODY0Mg%3D%3D.2-ccb7-5&oh=00_AT-H5SGET-X6zx_j-GGayPMijixUZwQOB6Ssy4c_gdtQSQ&oe=62BFFD3D&_nc_sid=bcb96")
 
