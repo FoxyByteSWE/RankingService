@@ -4,9 +4,10 @@ from mysql.connector import Error
 import pandas as pd
 
 from analyzer import rank
-from s3 import uploadFile, deleteFile
+from s3 import uploadFile, downloadFile, deleteFile
 from restaurant import Restaurant, Media, json2Restaurants
 
+BUCKET_NAME = "foxybyteswe"
 
 # Functions
 def create_server_connection(host_name, user_name, user_password):
@@ -101,6 +102,17 @@ def insertRestaurants(connection):
 		print(query)
 		execute_query(connection, query)
 
+def uploadDB():
+	os.system('mysqldump -u "root" -p "Restaurants" > Restaurants.sql')
+	uploadFile((str(sys.path[0]))+"/Restaurants.sql", BUCKET_NAME)
+
+def downloadDB():
+	downloadFile(BUCKET_NAME, "Restaurants.sql", (str(sys.path[0]))+"/Restaurants.sql")
+	connection = create_server_connection("localhost", "root", "root")
+	execute_query(connection, "DROP DATABASE IF EXISTS Restaurants")
+	create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
+	os.system('mysql -u root -p Restaurants < Restaurants.sql')
+
 # Queries
 drop_restaurants = "DROP TABLE IF EXISTS Restaurants"
 create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
@@ -121,8 +133,12 @@ insert_restaurant = "INSERT INTO Restaurants VALUES ("
 def main():
 	#connection = create_server_connection("localhost", "root", "root")
 	#create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
-	connection = create_db_connection("localhost", "root", "root", "Restaurants")
-	insertRestaurants(connection)
+
+	#connection = create_db_connection("localhost", "root", "root", "Restaurants")
+	#insertRestaurants(connection)
+
+	#uploadDB()
+	#downloadDB()
 
 if __name__ == "__main__":
 	main()

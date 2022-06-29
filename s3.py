@@ -46,8 +46,8 @@ def deleteFile(bucket, file_name):
 def main():
 	listBuckets()
 	listBucketObjetcs(BUCKET_NAME)
-	#uploadFile((str(sys.path[0]))+"/data/locationsData.json", BUCKET_NAME)
-	#downloadFile(BUCKET_NAME, "locationsData.json", (str(sys.path[0]))+"/data/Downloaded_locationsData.json")
+	#uploadFile((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json", BUCKET_NAME)
+	#downloadFile(BUCKET_NAME, "locationsData.json", (str(sys.path[0]))+"/../IGCrawlerService/crawler/data/Downloaded_locationsData.json")
 	#deleteFile(BUCKET_NAME, "locationsData.json")
 
 if __name__ == "__main__":
