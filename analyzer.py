@@ -18,7 +18,7 @@ def analyzeText(text):
 		LanguageCode = 'it'
 	)
 	response = parseTextResponse(response)
-	print(response)
+	#print(response)
 	return response
 
 def parseTextResponse(response):
@@ -67,13 +67,13 @@ def rank(restaurants):
 	for r in restaurants:
 		pos = neg = neu = mix = 0
 		weight_list = []
-		print("Comments for restaurant " + r.pk)
+		#print("Comments for restaurant " + r.pk)
 
 		for m in r.medias:
 			now = datetime.datetime.now()
 			post_taken_at = datetime.datetime(m.TakenAtTime[0], m.TakenAtTime[1], m.TakenAtTime[2], m.TakenAtTime[3], m.TakenAtTime[4], m.TakenAtTime[5])
 			age = (now - post_taken_at).days
-			print(age)
+			#print(age)
 
 			if age <= 30:
 				weight = 1
@@ -89,7 +89,7 @@ def rank(restaurants):
 				weight = 0
 
 			if m.CaptionText != "":
-				print(m.CaptionText)
+				#print(m.CaptionText)
 				score = analyzeText(m.CaptionText)
 				pos += score["Positive"] * weight
 				neg += score["Negative"] * weight
