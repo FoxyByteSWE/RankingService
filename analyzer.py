@@ -69,6 +69,7 @@ def rank(restaurants):
 	for r in restaurants:
 		pos = neg = neu = mix = 0
 		weight_list = []
+		print("Comments for restaurant " + r.pk)
 
 		for m in r.medias:
 			now = datetime.datetime.now()
@@ -89,13 +90,14 @@ def rank(restaurants):
 			else:
 				weight = 0
 
-			print(m.CaptionText)
-			score = analyzeText(m.CaptionText)
-			pos += score["Positive"] * weight
-			neg += score["Negative"] * weight
-			#neu += score["Neutral"] * weight
-			#mix += score["Mixed"] * weight
-			weight_list.append(weight)
+			if m.CaptionText != "":
+				print(m.CaptionText)
+				score = analyzeText(m.CaptionText)
+				pos += score["Positive"] * weight
+				neg += score["Negative"] * weight
+				#neu += score["Neutral"] * weight
+				#mix += score["Mixed"] * weight
+				weight_list.append(weight)
 
 		if sum(weight_list) == 0:
 			pos = neg = 0
