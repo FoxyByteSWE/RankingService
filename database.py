@@ -60,7 +60,8 @@ create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
 	Sito VARCHAR(70),
 	Telefono INTEGER,
 	Longitudine FLOAT,
-	Latitudine FLOAT
+	Latitudine FLOAT,
+	Ranking FLOAT
 )"""
 
 # Main

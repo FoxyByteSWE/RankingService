@@ -64,8 +64,6 @@ def detectLabels(url):
 
 def rank(restaurants):
 
-	dict = {}
-
 	for r in restaurants:
 		pos = neg = neu = mix = 0
 		weight_list = []
@@ -111,7 +109,7 @@ def rank(restaurants):
 		ranking = linearizeRanking(ranking)
 		ranking = round(ranking, 1)
 
-		dict.update({ str(r.pk) : '{0:.1f}'.format(ranking)})
+		r.ranking = ranking
 
 	return dict
 
@@ -124,7 +122,15 @@ def main():
 	test.append(analyzeText("Brutto"))
 
 	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
-	pprint.pprint(rank(restaurants))
+	for r in restaurants:
+		r.assignValues()
+
+	rank(restaurants)
+	for r in restaurants:
+		print(r.pk)
+		print(r.name)
+		r.printRanking()
+		print('\n')
 
 	detectLabels("https://instagram.ffco2-1.fna.fbcdn.net/v/t51.2885-15/11249882_966261376755731_963030927_n.jpg?se=8&stp=dst-jpg_e35&_nc_ht=instagram.ffco2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=9lNYboVO5K0AX90TSMu&edm=AKmAybEBAAAA&ccb=7-5&ig_cache_key=MTIyOTEzNTQ0NTAwMDU1ODY0Mg%3D%3D.2-ccb7-5&oh=00_AT-H5SGET-X6zx_j-GGayPMijixUZwQOB6Ssy4c_gdtQSQ&oe=62BFFD3D&_nc_sid=bcb96")
 
