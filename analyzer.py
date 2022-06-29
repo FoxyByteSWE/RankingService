@@ -109,9 +109,6 @@ def rank(restaurants):
 
 	return dict
 
-#def subtractDate(d1, d2):
-	#return (d1[0]-d2[0] * 365
-
 def main():
 	test = []
 	test.append(analyzeText("Molto bello!"))
