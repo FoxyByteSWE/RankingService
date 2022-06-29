@@ -3,6 +3,7 @@ from s3 import uploadFile, deleteFile
 import urllib.request
 import logging
 import boto3
+from math import exp
 import pprint
 from botocore.exceptions import ClientError
 import datetime
@@ -106,15 +107,22 @@ def rank(restaurants):
 			#mix /= sum(weight_list)
 
 		ranking = pos-neg
-		ranking = linearizeRanking(ranking)
+		ranking = linearRanking(ranking)
+		#ranking = sigmoidRanking(ranking)
 		ranking = round(ranking, 1)
 
 		r.ranking = ranking
 
 	return dict
 
-def linearizeRanking(x):
-	return 5*x + 5
+def linearRanking(x):
+	x = 5*x + 5
+	return x
+
+def sigmoidRanking(x):
+	x = 1 / (1 + exp(-5*x))
+	x = 10*x
+	return x
 
 def main():
 	test = []
@@ -129,7 +137,7 @@ def main():
 	for r in restaurants:
 		print(r.pk)
 		print(r.name)
-		r.printRanking()
+		r.printFormattedRanking()
 		print('\n')
 
 	detectLabels("https://instagram.ffco2-1.fna.fbcdn.net/v/t51.2885-15/11249882_966261376755731_963030927_n.jpg?se=8&stp=dst-jpg_e35&_nc_ht=instagram.ffco2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=9lNYboVO5K0AX90TSMu&edm=AKmAybEBAAAA&ccb=7-5&ig_cache_key=MTIyOTEzNTQ0NTAwMDU1ODY0Mg%3D%3D.2-ccb7-5&oh=00_AT-H5SGET-X6zx_j-GGayPMijixUZwQOB6Ssy4c_gdtQSQ&oe=62BFFD3D&_nc_sid=bcb96")
