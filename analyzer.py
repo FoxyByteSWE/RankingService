@@ -107,9 +107,16 @@ def rank(restaurants):
 			#neu /= sum(weight_list)
 			#mix /= sum(weight_list)
 
-		dict.update({ str(r.pk) : pos-neg })
+		ranking = pos-neg
+		ranking = linearizeRanking(ranking)
+		ranking = round(ranking, 1)
+
+		dict.update({ str(r.pk) : '{0:.1f}'.format(ranking)})
 
 	return dict
+
+def linearizeRanking(x):
+	return 5*x + 5
 
 def main():
 	test = []
