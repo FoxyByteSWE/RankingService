@@ -119,7 +119,7 @@ create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
 	Codice_pk VARCHAR(20) PRIMARY KEY,
 	Nome VARCHAR(50) NOT NULL,
 	Categoria  VARCHAR(20),
-	Indirizzo VARCHAR(50),
+	Indirizzo VARCHAR(100),
 	Sito VARCHAR(70),
 	Telefono VARCHAR(16),
 	Longitudine FLOAT,
@@ -134,10 +134,10 @@ def main():
 	#connection = create_server_connection("localhost", "root", "root")
 	#create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
 
-	#connection = create_db_connection("localhost", "root", "root", "Restaurants")
-	#insertRestaurants(connection)
+	connection = create_db_connection("localhost", "root", "root", "Restaurants")
+	insertRestaurants(connection)
 
-	#uploadDB()
+	uploadDB()
 	#downloadDB()
 
 if __name__ == "__main__":
