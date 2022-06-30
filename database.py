@@ -1,15 +1,18 @@
+# standard packages
 import sys, os
 import mysql.connector
 from mysql.connector import Error
 import pandas as pd
 
+# packages written as part of the project
 from analyzer import rank
 from s3 import uploadFile, downloadFile, deleteFile
 from restaurant import Restaurant, Media, json2Restaurants
 
+# S3 bucket name
 BUCKET_NAME = "foxybyteswe"
 
-# Functions
+##### Functions
 def create_server_connection(host_name, user_name, user_password):
     connection = None
     try:
@@ -113,7 +116,7 @@ def downloadDB():
 	create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
 	os.system('mysql -u root -p Restaurants < Restaurants.sql')
 
-# Queries
+##### Queries
 drop_restaurants = "DROP TABLE IF EXISTS Restaurants"
 create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
 	Codice_pk VARCHAR(20) PRIMARY KEY,
@@ -129,7 +132,7 @@ create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
 
 insert_restaurant = "INSERT INTO Restaurants VALUES ("
 
-# Main
+##### Main
 def main():
 	#connection = create_server_connection("localhost", "root", "root")
 	#create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")

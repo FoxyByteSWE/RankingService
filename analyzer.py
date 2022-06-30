@@ -1,52 +1,51 @@
+# standard packages
 import os, sys
-from s3 import uploadFile, deleteFile
 import urllib.request
 import logging
 import boto3
+from botocore.exceptions import ClientError
 from math import exp
 import pprint
-from botocore.exceptions import ClientError
 import datetime
 
+# packages written as part of the project
+from s3 import uploadFile, deleteFile
 from restaurant import Restaurant, Media, json2Restaurants
 
+# S3 bucket name
 BUCKET_NAME = "foxybyteswe"
 
+##### Comprehend
 def analyzeText(text):
 	client = boto3.client('comprehend')
+
 	lang = client.detect_dominant_language(
 		Text = text
 	)
 	lang = lang["Languages"][0]["LanguageCode"]
 	#print(lang)
+
 	response = client.detect_sentiment(
 		Text = text,
 		LanguageCode = lang
 	)
 	response = parseTextResponse(response)
 	#print(response)
+
 	return response
 
 def parseTextResponse(response):
 	dict = {}
+
 	dict["Sentiment"] = response["Sentiment"]
 	dict["Positive"] = response["SentimentScore"]["Positive"]
 	dict["Negative"] = response["SentimentScore"]["Negative"]
 	dict["Neutral"] = response["SentimentScore"]["Neutral"]
 	dict["Mixed"] = response["SentimentScore"]["Mixed"]
+
 	return dict
 
-def parseImageResponse(response):
-	list = []
-	for i in response["Labels"]:
-		dict = {}
-		dict["Name"] = i["Name"]
-		dict["Confidence"] = i["Confidence"]
-		dict["Parents"] = i["Parents"]
-		list.append(dict)
-	print(list)
-	return dict
-
+##### Rekognition
 def detectLabels(url):
 	urllib.request.urlretrieve(url, "tmp_image.jpg")
 
@@ -63,11 +62,28 @@ def detectLabels(url):
     MaxLabels = 5,
     MinConfidence = 0.5
 	)
+
 	deleteFile(BUCKET_NAME, "tmp_image.jpg")
 	os.remove("tmp_image.jpg")
 	response = parseImageResponse(response)
+
 	return response
 
+def parseImageResponse(response):
+	list = []
+
+	for i in response["Labels"]:
+		dict = {}
+		dict["Name"] = i["Name"]
+		dict["Confidence"] = i["Confidence"]
+		dict["Parents"] = i["Parents"]
+		list.append(dict)
+
+	print(list)
+
+	return list
+
+##### Ranking
 def rank(restaurants):
 
 	for r in restaurants:
@@ -129,6 +145,7 @@ def sigmoidRanking(x):
 	x = 10*x
 	return x
 
+##### Main
 def main():
 	test = []
 	test.append(analyzeText("Molto bello!"))

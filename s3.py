@@ -1,8 +1,10 @@
+# standard packages
 import os, sys
 import logging
 import boto3
 from botocore.exceptions import ClientError
 
+# S3 bucket name
 BUCKET_NAME = "foxybyteswe"
 
 def listBuckets():
