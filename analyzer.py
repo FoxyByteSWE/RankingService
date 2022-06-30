@@ -14,9 +14,14 @@ BUCKET_NAME = "foxybyteswe"
 
 def analyzeText(text):
 	client = boto3.client('comprehend')
+	lang = client.detect_dominant_language(
+		Text = text
+	)
+	lang = lang["Languages"][0]["LanguageCode"]
+	#print(lang)
 	response = client.detect_sentiment(
 		Text = text,
-		LanguageCode = 'it'
+		LanguageCode = lang
 	)
 	response = parseTextResponse(response)
 	#print(response)
@@ -127,7 +132,7 @@ def sigmoidRanking(x):
 def main():
 	test = []
 	test.append(analyzeText("Molto bello!"))
-	test.append(analyzeText("Brutto"))
+	test.append(analyzeText("I hate it"))
 
 	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
 	for r in restaurants:
