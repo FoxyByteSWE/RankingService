@@ -16,6 +16,22 @@ from restaurant import Restaurant, Media, json2Restaurants
 BUCKET_NAME = "foxybyteswe"
 
 ##### Comprehend
+def keyPhrases(text):
+	client = boto3.client('comprehend')
+
+	lang = client.detect_dominant_language(
+		Text = text
+	)
+	lang = lang["Languages"][0]["LanguageCode"]
+	#print(lang)
+
+	response = client.detect_key_phrases(
+		Text = text,
+		LanguageCode = lang
+	)
+	print(text)
+	print(response)
+
 def analyzeText(text):
 	client = boto3.client('comprehend')
 
