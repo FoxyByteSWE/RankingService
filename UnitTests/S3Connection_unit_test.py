@@ -4,7 +4,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 
-sys.path.insert(0, (str(sys.path[0]))+"/../") 
+sys.path.insert(1, (str(sys.path[0]))+"/../") 
 
 from S3Connection import S3Connection
 

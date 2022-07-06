@@ -5,9 +5,12 @@ from mysql.connector import Error
 import pandas as pd
 
 # packages written as part of the project
-from analyzer import rank
 from S3Connection import S3Connection
-from restaurant import Restaurant, Media, json2Restaurants
+
+sys.path.insert(1, (str(sys.path[0]))+"/../IGCrawlerService/crawler/")
+
+from Media import Media
+from Restaurant import Restaurant, json2Restaurants, removeOldMedias, rank
 
 # S3 bucket name
 BUCKET_NAME = "foxybyteswe"
@@ -103,10 +106,11 @@ class DBConnection:
 		try:
 			cursor.execute(query)
 			connection.commit()
-			print("Successfully executed " + query + "\nResult:\n")
-			result = cursor.fetchall();
-			for row in result:
-				print(row)
+			print("Successfully executed " + query)
+			#print("\nResult:")
+			#result = cursor.fetchall();
+			#for row in result:
+				#print(row)
 		except Error as err:
 			print(f"Error: '{err}'")
 
@@ -137,6 +141,7 @@ class DBConnection:
 
 		for r in restaurants:
 			r.assignValues()
+		removeOldMedias(restaurants)
 		rank(restaurants)
 
 		for r in restaurants:
@@ -189,7 +194,7 @@ class DBConnection:
 
 	def downloadDB(self):
 		self.createS3Connection()
-		self.s3.downloadFile("Restaurants.sql", (str(sys.path[0]))+"/Restaurants_database.sql")
+		self.s3.downloadFile("Restaurants_database.sql", (str(sys.path[0]))+"/Restaurants_database.sql")
 		self.createServerConnection()
 		self.createDatabase("Restaurants")
 		os.system('mysql -u root -p Restaurants < Restaurants_database.sql')

@@ -3,7 +3,7 @@ import mysql.connector
 from mysql.connector import Error
 import pandas as pd
 
-sys.path.insert(0, (str(sys.path[0]))+"/../") 
+sys.path.insert(1, (str(sys.path[0]))+"/../") 
 
 from S3Connection import S3Connection
 from DBConnection import DBConnection
