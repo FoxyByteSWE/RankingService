@@ -13,6 +13,7 @@ from restaurant import Restaurant, Media, json2Restaurants
 BUCKET_NAME = "foxybyteswe"
 
 class DBConnection:
+
 	def __init__(self, hostname = "localhost", user = "root", password = "root", server_connection = None, database_connection = None, s3 = None):
 		self.hostname = hostname
 		self.user = user

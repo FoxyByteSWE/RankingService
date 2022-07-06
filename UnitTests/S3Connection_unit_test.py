@@ -4,9 +4,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir) 
+sys.path.insert(0, (str(sys.path[0]))+"/../") 
 
 from S3Connection import S3Connection
 

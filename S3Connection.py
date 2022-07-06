@@ -7,6 +7,7 @@ from botocore.exceptions import ClientError
 BUCKET_NAME = "foxybyteswe"
 
 class S3Connection:
+
 	def __init__(self, default_bucket = ""):
 		self.default_bucket = default_bucket
 
