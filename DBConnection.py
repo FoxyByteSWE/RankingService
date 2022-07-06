@@ -128,6 +128,7 @@ class DBConnection:
 			Indirizzo VARCHAR(150),
 			Sito VARCHAR(70),
 			Telefono VARCHAR(16),
+			Immagine VARCHAR(150),
 			Longitudine FLOAT,
 			Latitudine FLOAT,
 			Ranking FLOAT
@@ -170,6 +171,9 @@ class DBConnection:
 			phone = '"' + str(r.phone) + '", '
 			if phone == '""' or phone == '"None", ':
 				phone = 'NULL, '
+			main_image_url = '"' + str(r.main_image_url) + '", '
+			if main_image_url == '""' or main_image_url == '"None", ':
+				main_image_url = 'NULL, '
 			lng = '"' + str(r.coordinates[0]) + '", '
 			if lng == '""' or lng == '"None", ':
 				lng = 'NULL, '
@@ -180,7 +184,7 @@ class DBConnection:
 			if ranking == '""' or ranking == '"None", ':
 				ranking = 'NULL, '
 
-			insert_restaurant = "INSERT INTO Restaurants VALUES (" + pk + name + category + address + website + phone + lng + lat + ranking + ');'
+			insert_restaurant = "INSERT INTO Restaurants VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + ');'
 			#print(insert_restaurant)
 			self.executeQuery(insert_restaurant)
 
