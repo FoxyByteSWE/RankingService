@@ -1,15 +1,18 @@
+# standard packages
 import sys, os
 import mysql.connector
 from mysql.connector import Error
 import pandas as pd
 
+# packages written as part of the project
 from analyzer import rank
-from s3 import uploadFile, downloadFile, deleteFile
+from S3Connection import S3Connection
 from restaurant import Restaurant, Media, json2Restaurants
 
+# S3 bucket name
 BUCKET_NAME = "foxybyteswe"
 
-# Functions
+##### Functions
 def create_server_connection(host_name, user_name, user_password):
     connection = None
     try:
@@ -104,16 +107,18 @@ def insertRestaurants(connection):
 
 def uploadDB():
 	os.system('mysqldump -u "root" -p "Restaurants" > Restaurants.sql')
-	uploadFile((str(sys.path[0]))+"/Restaurants.sql", BUCKET_NAME)
+	s3 = S3Connection(BUCKET_NAME)
+	s3.uploadFile((str(sys.path[0]))+"/Restaurants.sql")
 
 def downloadDB():
-	downloadFile(BUCKET_NAME, "Restaurants.sql", (str(sys.path[0]))+"/Restaurants.sql")
+	s3 = S3Connection(BUCKET_NAME)
+	s3.downloadFile("Restaurants.sql", (str(sys.path[0]))+"/Restaurants.sql")
 	connection = create_server_connection("localhost", "root", "root")
 	execute_query(connection, "DROP DATABASE IF EXISTS Restaurants")
 	create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
 	os.system('mysql -u root -p Restaurants < Restaurants.sql')
 
-# Queries
+##### Queries
 drop_restaurants = "DROP TABLE IF EXISTS Restaurants"
 create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
 	Codice_pk VARCHAR(20) PRIMARY KEY,
@@ -129,16 +134,16 @@ create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
 
 insert_restaurant = "INSERT INTO Restaurants VALUES ("
 
-# Main
+##### Main
 def main():
-	#connection = create_server_connection("localhost", "root", "root")
-	#create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
+	connection = create_server_connection("localhost", "root", "root")
+	create_database(connection, "CREATE DATABASE IF NOT EXISTS Restaurants")
 
 	connection = create_db_connection("localhost", "root", "root", "Restaurants")
 	insertRestaurants(connection)
 
 	uploadDB()
-	#downloadDB()
+	downloadDB()
 
 if __name__ == "__main__":
 	main()

@@ -9,7 +9,7 @@ import pprint
 import datetime
 
 # packages written as part of the project
-from s3 import uploadFile, deleteFile
+from S3Connection import S3Connection
 from restaurant import Restaurant, Media, json2Restaurants
 
 # S3 bucket name
@@ -77,7 +77,8 @@ def parseKeyPhrase(response):
 def detectLabels(url):
 	urllib.request.urlretrieve(url, "tmp_image.jpg")
 
-	uploadFile("tmp_image.jpg", BUCKET_NAME)
+	s3 = S3Connection(BUCKET_NAME)
+	s3.uploadFile("tmp_image.jpg")
 
 	client = boto3.client('rekognition')
 	response = client.detect_labels(
@@ -91,7 +92,7 @@ def detectLabels(url):
     MinConfidence = 0.5
 	)
 
-	deleteFile(BUCKET_NAME, "tmp_image.jpg")
+	s3.deleteFile("tmp_image.jpg")
 	os.remove("tmp_image.jpg")
 	response = parseImageResponse(response)
 
@@ -114,7 +115,8 @@ def parseImageResponse(response):
 def detectFacesEmotions(url):
 	urllib.request.urlretrieve(url, "tmp_image.jpg")
 
-	uploadFile("tmp_image.jpg", BUCKET_NAME)
+	s3 = S3Connection(BUCKET_NAME)
+	s3.uploadFile("tmp_image.jpg")
 
 	client = boto3.client('rekognition')
 	response = client.detect_faces(
@@ -129,7 +131,7 @@ def detectFacesEmotions(url):
 	]
 	)
 
-	deleteFile(BUCKET_NAME, "tmp_image.jpg")
+	s3.deleteFile("tmp_image.jpg")
 	os.remove("tmp_image.jpg")
 	response = parseEmotions(response)
 
@@ -220,23 +222,27 @@ def sigmoidRanking(x):
 
 ##### Main
 def main():
-	#test = []
-	#test.append(analyzeText("Molto bello!"))
-	#test.append(analyzeText("I hate it"))
+	"""
+	test = []
+	test.append(analyzeText("Molto bello!"))
+	test.append(analyzeText("I hate it"))
 
-	#restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
-	#for r in restaurants:
-		#r.assignValues()
+	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
+	for r in restaurants:
+		r.assignValues()
 
-	#rank(restaurants)
-	#for r in restaurants:
-		#print(r.pk)
-		#print(r.name)
-		#r.printFormattedRanking()
-		#print('\n')
+	rank(restaurants)
+	for r in restaurants:
+		print(r.pk)
+		print(r.name)
+		r.printFormattedRanking()
+		print('\n')
+	"""
 
 	#detectLabels("https://instagram.ffco2-1.fna.fbcdn.net/v/t51.2885-15/11249882_966261376755731_963030927_n.jpg?se=8&stp=dst-jpg_e35&_nc_ht=instagram.ffco2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=9lNYboVO5K0AX90TSMu&edm=AKmAybEBAAAA&ccb=7-5&ig_cache_key=MTIyOTEzNTQ0NTAwMDU1ODY0Mg%3D%3D.2-ccb7-5&oh=00_AT-H5SGET-X6zx_j-GGayPMijixUZwQOB6Ssy4c_gdtQSQ&oe=62BFFD3D&_nc_sid=bcb96")
-	detectFacesEmotions("https://instagram.ffco2-1.fna.fbcdn.net/v/t51.2885-15/11249882_966261376755731_963030927_n.jpg?se=8&stp=dst-jpg_e35&_nc_ht=instagram.ffco2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=9lNYboVO5K0AX90TSMu&edm=AKmAybEBAAAA&ccb=7-5&ig_cache_key=MTIyOTEzNTQ0NTAwMDU1ODY0Mg%3D%3D.2-ccb7-5&oh=00_AT-H5SGET-X6zx_j-GGayPMijixUZwQOB6Ssy4c_gdtQSQ&oe=62BFFD3D&_nc_sid=bcb96")
+	#detectFacesEmotions("https://instagram.ffco2-1.fna.fbcdn.net/v/t51.2885-15/11249882_966261376755731_963030927_n.jpg?se=8&stp=dst-jpg_e35&_nc_ht=instagram.ffco2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=9lNYboVO5K0AX90TSMu&edm=AKmAybEBAAAA&ccb=7-5&ig_cache_key=MTIyOTEzNTQ0NTAwMDU1ODY0Mg%3D%3D.2-ccb7-5&oh=00_AT-H5SGET-X6zx_j-GGayPMijixUZwQOB6Ssy4c_gdtQSQ&oe=62BFFD3D&_nc_sid=bcb96")
+	detectLabels("https://thumbs.dreamstime.com/z/happy-little-boy-smiley-face-portrait-human-concept-freshness-133726078.jpg")
+	detectFacesEmotions("https://thumbs.dreamstime.com/z/happy-little-boy-smiley-face-portrait-human-concept-freshness-133726078.jpg")
 
 if __name__ == "__main__":
 	main()
