@@ -27,8 +27,8 @@ def main():
 	db.executeQuery("SHOW TABLES;");
 	#insertRestaurants(connection)
 
-	#uploadDB()
-	#downloadDB()
+	#uploadDB("Testing")
+	#downloadDB("Testing")
 
 if __name__ == "__main__":
 	main()

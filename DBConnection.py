@@ -195,7 +195,8 @@ class DBConnection:
 		self.createS3Connection()
 		command = 'mysqldump -u "root" -proot "' + db + '" > ' + db + '_database.sql'
 		os.system(command)
-		self.s3.uploadFile((str(sys.path[0]))+"/Restaurants_database.sql")
+		file = (str(sys.path[0]))+"/" + db + "_database.sql"
+		self.s3.uploadFile(file)
 
 	def downloadDB(self, db):
 		self.createS3Connection()
@@ -204,7 +205,8 @@ class DBConnection:
 		self.s3.downloadFile(object, file)
 		self.createServerConnection()
 		self.createDatabase("Restaurants")
-		os.system('mysql -u root -proot Restaurants < Restaurants_database.sql')
+		command = 'mysql -u root -proot ' + db + ' < ' + db + '_database.sql'
+		os.system(command)
 
 def main():
 
