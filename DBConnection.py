@@ -57,12 +57,14 @@ class DBConnection:
 
 		cursor = connection.cursor(buffered=True)
 
+		"""
 		query = "DROP DATABASE IF EXISTS " + name + ";"
 		try:
 			cursor.execute(query)
 			print("Successfully dropped database " + name)
 		except Error as err:
 			print(f"Error: '{err}'")
+		"""
 
 		query = "CREATE DATABASE IF NOT EXISTS " + name + ";"
 		try:
@@ -128,7 +130,7 @@ class DBConnection:
 			Indirizzo VARCHAR(150),
 			Sito VARCHAR(70),
 			Telefono VARCHAR(16),
-			Immagine VARCHAR(150),
+			Immagine VARCHAR(300),
 			Longitudine FLOAT,
 			Latitudine FLOAT,
 			Ranking FLOAT
@@ -204,7 +206,7 @@ class DBConnection:
 		file = (str(sys.path[0]))+"/" + db + "_database.sql"
 		self.s3.downloadFile(object, file)
 		self.createServerConnection()
-		self.createDatabase("Restaurants")
+		self.createDatabase(db)
 		command = 'mysql -u root -proot ' + db + ' < ' + db + '_database.sql'
 		os.system(command)
 
@@ -213,13 +215,13 @@ def main():
 	db = DBConnection()
 
 	#db.createServerConnection()
-	#db.createDatabase("Restaurants")
+	#db.createDatabase("MichelinSocial")
 
-	#db.createDatabaseConnection("Restaurants")
+	#db.createDatabaseConnection("MichelinSocial")
 	#db.insertRestaurants()
 
-	#db.uploadDB("Restaurants")
-	db.downloadDB("Restaurants")
+	#db.uploadDB("MichelinSocial")
+	#db.downloadDB("MichelinSocial")
 
 if __name__ == "__main__":
 	main()
