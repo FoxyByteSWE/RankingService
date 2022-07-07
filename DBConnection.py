@@ -191,14 +191,17 @@ class DBConnection:
 	def createS3Connection(self):
 		self.s3 = S3Connection(BUCKET_NAME)
 
-	def uploadDB(self):
+	def uploadDB(self, db):
 		self.createS3Connection()
-		os.system('mysqldump -u "root" -proot "Restaurants" > Restaurants_database.sql')
+		command = 'mysqldump -u "root" -proot "' + db + '" > ' + db + '_database.sql'
+		os.system(command)
 		self.s3.uploadFile((str(sys.path[0]))+"/Restaurants_database.sql")
 
-	def downloadDB(self):
+	def downloadDB(self, db):
 		self.createS3Connection()
-		self.s3.downloadFile("Restaurants_database.sql", (str(sys.path[0]))+"/Restaurants_database.sql")
+		object = db + "_database.sql"
+		file = (str(sys.path[0]))+"/" + db + "_database.sql"
+		self.s3.downloadFile(object, file)
 		self.createServerConnection()
 		self.createDatabase("Restaurants")
 		os.system('mysql -u root -proot Restaurants < Restaurants_database.sql')
@@ -207,14 +210,14 @@ def main():
 
 	db = DBConnection()
 
-	db.createServerConnection()
-	db.createDatabase("Restaurants")
+	#db.createServerConnection()
+	#db.createDatabase("Restaurants")
 
-	db.createDatabaseConnection("Restaurants")
-	db.insertRestaurants()
+	#db.createDatabaseConnection("Restaurants")
+	#db.insertRestaurants()
 
-	db.uploadDB()
-	db.downloadDB()
+	#db.uploadDB("Restaurants")
+	db.downloadDB("Restaurants")
 
 if __name__ == "__main__":
 	main()
