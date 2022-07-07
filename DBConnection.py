@@ -228,7 +228,7 @@ def main():
 	#db.createDatabaseConnection("MichelinSocial")
 	#db.insertRestaurants()
 
-	db.uploadDB("MichelinSocial")
+	#db.uploadDB("MichelinSocial")
 	#db.downloadDB("MichelinSocial")
 
 if __name__ == "__main__":

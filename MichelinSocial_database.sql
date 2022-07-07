@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `Users`;
 CREATE TABLE `Users` (
   `Email` varchar(50) NOT NULL,
   `Username` varchar(20) NOT NULL,
-  `Password` varchar(20) NOT NULL,
+  `Password` varchar(100) NOT NULL,
   `Admin` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -69,6 +69,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
+INSERT INTO `Users` VALUES (' test.ecample@gmail.com','Test Name','7bcf9d89298f1bfae16fa02ed6b61908fd2fa8de45dd8e2153a3c47300765328',0);
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -81,4 +82,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-07 15:29:03
+-- Dump completed on 2022-07-07 16:31:44
