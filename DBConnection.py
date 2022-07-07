@@ -193,21 +193,29 @@ class DBConnection:
 	def createS3Connection(self):
 		self.s3 = S3Connection(BUCKET_NAME)
 
-	def uploadDB(self, db):
+	def uploadDB(self, db, fileDirectory = None):
+
+		if fileDirectory is None:
+			fileDirectory = str(sys.path[0]) + "/"
+
 		self.createS3Connection()
-		command = 'mysqldump -u "root" -proot "' + db + '" > ' + db + '_database.sql'
+		command = 'mysqldump -u "root" -proot "' + db + '" > '  + fileDirectory + db + '_database.sql'
 		os.system(command)
-		file = (str(sys.path[0]))+"/" + db + "_database.sql"
+		file = fileDirectory + db + "_database.sql"
 		self.s3.uploadFile(file)
 
-	def downloadDB(self, db):
+	def downloadDB(self, db, fileDirectory = None):
+
+		if fileDirectory is None:
+			fileDirectory = str(sys.path[0]) + "/"
+
 		self.createS3Connection()
 		object = db + "_database.sql"
-		file = (str(sys.path[0]))+"/" + db + "_database.sql"
+		file = fileDirectory + db + "_database.sql"
 		self.s3.downloadFile(object, file)
 		self.createServerConnection()
 		self.createDatabase(db)
-		command = 'mysql -u root -proot ' + db + ' < ' + db + '_database.sql'
+		command = 'mysql -u root -proot ' + db + ' < ' + fileDirectory + db + '_database.sql'
 		os.system(command)
 
 def main():
@@ -220,7 +228,7 @@ def main():
 	#db.createDatabaseConnection("MichelinSocial")
 	#db.insertRestaurants()
 
-	#db.uploadDB("MichelinSocial")
+	db.uploadDB("MichelinSocial")
 	#db.downloadDB("MichelinSocial")
 
 if __name__ == "__main__":
