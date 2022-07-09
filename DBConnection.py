@@ -116,7 +116,7 @@ class DBConnection:
 		except Error as err:
 			print(f"Error: '{err}'")
 
-	def insertRestaurants(self, connection = None):
+	def insertRestaurants(self, restaurants, connection = None):
 
 		if connection is None:
 			connection = self.database_connection
@@ -130,7 +130,7 @@ class DBConnection:
 			Indirizzo VARCHAR(150),
 			Sito VARCHAR(70),
 			Telefono VARCHAR(16),
-			Immagine VARCHAR(300),
+			Immagine VARCHAR(1500),
 			Longitudine FLOAT,
 			Latitudine FLOAT,
 			Ranking FLOAT
@@ -139,13 +139,6 @@ class DBConnection:
 		self.executeQuery(drop_restaurants)
 
 		self.executeQuery(create_restaurants)
-
-		restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
-
-		for r in restaurants:
-			r.assignValues()
-		removeOldMedias(restaurants)
-		rank(restaurants)
 
 		for r in restaurants:
 			#print(r.pk)

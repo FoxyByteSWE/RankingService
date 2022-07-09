@@ -14,15 +14,25 @@ class ComprehendClient:
 		lang = client.detect_dominant_language(
 			Text = text
 		)
-		lang = lang["Languages"][0]["LanguageCode"]
-		#print(lang)
-
-		response = client.detect_sentiment(
-			Text = text,
-			LanguageCode = lang
-		)
-		response = self.parseTextResponse(response)
-		#print(response)
+		#lang = lang["Languages"][0]["LanguageCode"]
+		print(lang)
+		if lang not in ["ar", "hi", "ko", "zh-TW", "ja", "zh", "de", "pt", "en", "it", "fr", "es"]:
+			response = {}
+			response["Sentiment"] = "Neutral"
+			response["Positive"] = 0
+			response["Negative"] = 0
+			response["Neutral"] = 1
+			response["Mixed"] = 0
+			#print(text)
+			#print(response)
+		else:
+			response = client.detect_sentiment(
+				Text = text,
+				LanguageCode = lang
+			)
+			response = self.parseTextResponse(response)
+			#print(text)
+			#print(response)
 
 		return response
 

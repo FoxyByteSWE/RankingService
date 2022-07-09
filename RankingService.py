@@ -17,7 +17,14 @@ def main():
 	db.createDatabase("michelinsocial")
 
 	db.createDatabaseConnection("michelinsocial")
-	db.insertRestaurants()
+
+	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
+	for r in restaurants:
+		r.assignValues()
+	removeOldMedias(restaurants)
+	rank(restaurants)
+
+	db.insertRestaurants(restaurants)
 
 	db.uploadDB("michelinsocial")
 	db.downloadDB("michelinsocial")
