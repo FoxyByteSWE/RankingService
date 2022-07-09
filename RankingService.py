@@ -14,13 +14,13 @@ def main():
 	db = DBConnection()
 
 	db.createServerConnection()
-	db.createDatabase("MichelinSocial")
+	db.createDatabase("michelinsocial")
 
-	db.createDatabaseConnection("MichelinSocial")
+	db.createDatabaseConnection("michelinsocial")
 	db.insertRestaurants()
 
-	db.uploadDB("MichelinSocial")
-	db.downloadDB("MichelinSocial")
+	db.uploadDB("michelinsocial")
+	db.downloadDB("michelinsocial")
 
 if __name__ == "__main__":
 	main()

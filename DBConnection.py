@@ -121,9 +121,9 @@ class DBConnection:
 		if connection is None:
 			connection = self.database_connection
 
-		drop_restaurants = "DROP TABLE IF EXISTS Restaurants;"
+		drop_restaurants = "DROP TABLE IF EXISTS restaurants;"
 
-		create_restaurants = """CREATE TABLE IF NOT EXISTS Restaurants(
+		create_restaurants = """CREATE TABLE IF NOT EXISTS restaurants(
 			Codice_pk VARCHAR(20) PRIMARY KEY,
 			Nome VARCHAR(50) NOT NULL,
 			Categoria  VARCHAR(20),
@@ -186,7 +186,7 @@ class DBConnection:
 			if ranking == '""' or ranking == '"None", ':
 				ranking = 'NULL, '
 
-			insert_restaurant = "INSERT INTO Restaurants VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + ');'
+			insert_restaurant = "INSERT INTO restaurants VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + ');'
 			#print(insert_restaurant)
 			self.executeQuery(insert_restaurant)
 
