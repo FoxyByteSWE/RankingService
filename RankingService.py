@@ -4,7 +4,7 @@ from DBConnection import DBConnection
 
 sys.path.insert(1, (str(sys.path[0]))+"/../IGCrawlerService/crawler/")
 
-from Restaurant import Restaurant, json2Restaurants, removeOldMedias, rank
+from Restaurant import Restaurant, json2Restaurants
 
 # S3 bucket name
 BUCKET_NAME = "foxybyteswe"
@@ -21,8 +21,8 @@ def main():
 	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
 	for r in restaurants:
 		r.assignValues()
-	removeOldMedias(restaurants)
-	rank(restaurants)
+		r.removeOldMedias()
+		r.rank()
 
 	db.insertRestaurants(restaurants)
 

@@ -10,7 +10,7 @@ from S3Connection import S3Connection
 sys.path.insert(1, (str(sys.path[0]))+"/../IGCrawlerService/crawler/")
 
 from Media import Media
-from Restaurant import Restaurant, json2Restaurants, removeOldMedias, rank
+from Restaurant import Restaurant
 
 # S3 bucket name
 BUCKET_NAME = "foxybyteswe"

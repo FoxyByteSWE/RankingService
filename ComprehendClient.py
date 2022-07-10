@@ -14,8 +14,8 @@ class ComprehendClient:
 		lang = client.detect_dominant_language(
 			Text = text
 		)
-		#lang = lang["Languages"][0]["LanguageCode"]
-		print(lang)
+		lang = lang["Languages"][0]["LanguageCode"]
+		#print(lang)
 		if lang not in ["ar", "hi", "ko", "zh-TW", "ja", "zh", "de", "pt", "en", "it", "fr", "es"]:
 			response = {}
 			response["Sentiment"] = "Neutral"
@@ -23,6 +23,7 @@ class ComprehendClient:
 			response["Negative"] = 0
 			response["Neutral"] = 1
 			response["Mixed"] = 0
+			print("Unknown language")
 			#print(text)
 			#print(response)
 		else:
