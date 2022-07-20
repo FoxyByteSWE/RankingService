@@ -58,6 +58,7 @@ CREATE TABLE `users` (
   `Email` varchar(50) NOT NULL,
   `Username` varchar(20) NOT NULL,
   `Password` varchar(100) NOT NULL,
+  `Foto` varchar(200) DEFAULT NULL,
   `Admin` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -69,7 +70,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (' test.ecample@gmail.com','Test Name','7bcf9d89298f1bfae16fa02ed6b61908fd2fa8de45dd8e2153a3c47300765328',0);
+INSERT INTO `users` VALUES (' test.ecample@gmail.com','Test Name','7bcf9d89298f1bfae16fa02ed6b61908fd2fa8de45dd8e2153a3c47300765328','',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
