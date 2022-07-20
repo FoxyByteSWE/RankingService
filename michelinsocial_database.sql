@@ -29,7 +29,7 @@ CREATE TABLE `restaurants` (
   `Indirizzo` varchar(150) DEFAULT NULL,
   `Sito` varchar(70) DEFAULT NULL,
   `Telefono` varchar(16) DEFAULT NULL,
-  `Immagine` varchar(1500) DEFAULT NULL,
+  `Immagine` varchar(300) DEFAULT NULL,
   `Longitudine` float DEFAULT NULL,
   `Latitudine` float DEFAULT NULL,
   `Ranking` float DEFAULT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `restaurants` (
 
 LOCK TABLES `restaurants` WRITE;
 /*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
-INSERT INTO `restaurants` VALUES ('1788391034730029','Farina del mio sacco','Deli','28, Via Saraceno, Centro cittadino, Giardino, Ferrara, Emilia-Romagna, 44121, Italia','https://www.farinadelmiosaccoferrara.it','0532474303','',11.6229,44.8329,7.7),('237766690','Pasticceria Chiurato','Bar','Pasticceria Chiurato, 50, Corso Mazzini, Marostica, Colceresa, Vicenza, Veneto, 36063, Italia','https://www.pasticceriachiurato.it/','042472134','',11.656,45.7467,5.6),('3110887','Ristorante Pizzeria Lunaelaltro - Marostica','Italian Restaurant','Ristorante Pizzeria Lunaelaltro, 33, Corso della Ceramica, Marostica, Colceresa, Vicenza, Veneto, 36063, Italia','http://www.lunaelaltro.it','+390424478098','',11.6607,45.7369,5),('4706333','Al Saiso','Pub','2, Via Crestano Menarola, Angarano, Bassano del Grappa, Colceresa, Vicenza, Veneto, 31061, Italia','http://www.alsaiso.it','0424220819','',11.7321,45.7675,5),('5608297','Roadhouse Restaurant','Steakhouse','Stazione Termini, Piazzale Sisto V, Esquilino, Municipio Roma I, Roma, Roma Capitale, Lazio, 00100, Italia','http://www.roadhouse.it/it/ristorante-roadhouse-roma-termini','+390648907344','',12.5029,41.9017,5),('742243027','Pizzeria L\'Angelo e il Diavolo','Pizza place','San Mango Piemonte, Salerno, Campania, 84132, Italia','https://www.pizzerialangeloeildiavolo.it','+39089281793','',14.8297,40.6995,5);
+INSERT INTO `restaurants` VALUES ('1788391034730029','Farina del mio sacco','Deli','28, Via Saraceno, Centro cittadino, Giardino, Ferrara, Emilia-Romagna, 44121, Italia','https://www.farinadelmiosaccoferrara.it','0532474303','https://lh5.googleusercontent.com/p/AF1QipMnDendXP0WDteyJBU9ZdcdZ6kA4d4vg8nnepIc=w427-h240-k-no',11.6229,44.8329,7),('237766690','Pasticceria Chiurato','Bar','Pasticceria Chiurato, 50, Corso Mazzini, Marostica, Colceresa, Vicenza, Veneto, 36063, Italia','https://www.pasticceriachiurato.it/','042472134','https://lh5.googleusercontent.com/p/AF1QipM1IfwMmoRwQ375SmxLgIwab5I37MoB34Sh9Wda=w426-h240-k-no',11.656,45.7467,5),('3110887','Ristorante Pizzeria Lunaelaltro - Marostica','Italian Restaurant','Ristorante Pizzeria Lunaelaltro, 33, Corso della Ceramica, Marostica, Colceresa, Vicenza, Veneto, 36063, Italia','http://www.lunaelaltro.it','+390424478098','https://lh5.googleusercontent.com/p/AF1QipMUlnhZwJ5ENnmZFunVgKW4KDuzb7cfsqjEOjIw=w408-h271-k-no',11.6607,45.7369,5),('4706333','Al Saiso','Pub','2, Via Crestano Menarola, Angarano, Bassano del Grappa, Colceresa, Vicenza, Veneto, 31061, Italia','http://www.alsaiso.it','0424220819','https://lh5.googleusercontent.com/p/AF1QipPlitS1aCG7AxYkKEaNRjNE2AlLkZWvlbGUKyIw=w408-h271-k-no',11.7321,45.7675,5),('5608297','Roadhouse Restaurant','Steakhouse','Stazione Termini, Piazzale Sisto V, Esquilino, Municipio Roma I, Roma, Roma Capitale, Lazio, 00100, Italia','http://www.roadhouse.it/it/ristorante-roadhouse-roma-termini','+390648907344','https://www.google.com/maps/vt/pb=!1m5!1m4!1i8!2i272!3i189!4i128!2m2!1e1!3i928!3m9!2sit!3sit!5e1105!12m1!1e4!12m1!1e47!12m1!1e3!4e0!5m1!1e0!23i10203575!23i1381033!23i1368782!23i1368785!23i47025228!23i4592408!23i1375050!23i4536287',12.5029,41.9017,5),('742243027','Pizzeria L\'Angelo e il Diavolo','Pizza place','San Mango Piemonte, Salerno, Campania, 84132, Italia','https://www.pizzerialangeloeildiavolo.it','+39089281793','https://lh5.googleusercontent.com/p/AF1QipMxS3wYgWE9HM56kpoEEXyHXxs7wX_ywekwoaR8=w408-h306-k-no',14.8297,40.6995,5);
 /*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,4 +82,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-10 10:04:09
+-- Dump completed on 2022-07-20 14:33:18
