@@ -133,7 +133,11 @@ class DBConnection:
 			Immagine VARCHAR(1500),
 			Longitudine FLOAT,
 			Latitudine FLOAT,
-			Ranking FLOAT
+			Ranking FLOAT,
+			Commento_1_URL VARCHAR(1500),
+			Commento_1_testo VARCHAR(1000),
+			Commento_2_URL VARCHAR(1500),
+			Commento_2_testo VARCHAR(1000)
 		)"""
 
 		self.executeQuery(drop_restaurants)
@@ -175,11 +179,32 @@ class DBConnection:
 			lat = '"' + str(r.coordinates[1]) + '", '
 			if lat == '""' or lat == '"None", ':
 				lat = 'NULL, '
-			ranking = '"' + str(r.returnFormattedRanking()) + '"'
+			ranking = '"' + str(r.returnFormattedRanking()) + '", '
 			if ranking == '""' or ranking == '"None", ':
 				ranking = 'NULL, '
 
-			insert_restaurant = "INSERT INTO restaurants VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + ');'
+			if len(r.comments) > 0:
+				comment_1_url = '"' + str(r.comments[0][0]) + '", '
+				if comment_1_url == '""' or comment_1_url == '"None", ':
+					comment_1_url = 'NULL, '
+				comment_1_text = '"' + str(r.comments[0][1]) + '", '
+				if comment_1_text == '""' or comment_1_text == '"None", ':
+					comment_1_text = 'NULL, '
+			else:
+				comment_1_url = 'NULL, '
+				comment_1_text = 'NULL, '
+			if len(r.comments) > 1:
+				comment_2_url = '"' + str(r.comments[1][0]) + '", '
+				if comment_2_url == '""' or comment_2_url == '"None", ':
+					comment_2_url = 'NULL, '
+				comment_2_text = '"' + str(r.comments[1][1]) + '", '
+				if comment_2_text == '""' or comment_2_text == '"None", ':
+					comment_2_text = 'NULL, '
+			else:
+				comment_2_url = 'NULL, '
+				comment_2_text = 'NULL '
+
+			insert_restaurant = "INSERT INTO restaurants VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + comment_1_url + comment_1_text + comment_2_url + comment_2_text + ');'
 			#print(insert_restaurant)
 			self.executeQuery(insert_restaurant)
 
