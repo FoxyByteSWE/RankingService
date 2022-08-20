@@ -1,4 +1,3 @@
-import os, sys
 import logging
 import boto3
 from botocore.exceptions import ClientError
@@ -76,19 +75,4 @@ class S3Connection:
 			Key = file_name
 		)["Body"].read()
 
-		print(response)
-
-def main():
-
-	s3 = S3Connection(BUCKET_NAME)
-
-	s3.listBuckets()
-	s3.listBucketObjetcs()
-	#s3.uploadFile((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
-	#s3.downloadFile("locationsData.json", (str(sys.path[0]))+"/../IGCrawlerService/crawler/data/Downloaded_locationsData.json")
-	#s3.deleteFile("locationsData.json")
-	#s3.listBucketObjetcs()
-	s3.readFile("locationsData.json")
-
-if __name__ == "__main__":
-	main()
+		return response

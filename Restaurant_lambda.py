@@ -1,31 +1,12 @@
 import json
-import sys, os
 import datetime
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 from math import exp
-from pprint import pprint
+import time
 
 from Media import Media
-
-sys.path.insert(1, (str(sys.path[0]))+"/../../RankingService/")
-
 from ComprehendClient import ComprehendClient
 from RekognitionClient import RekognitionClient
-
-import os, json, sys
-import sys, time, os, json
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-if os.name == 'posix':
-	#chromedriverDirectory = (str(sys.path[0]))+"/../chromedriver"
-	chromedriverDirectory = (str(sys.path[0]))+"/../IGCrawlerService/chromedriver"
-else:
-	#chromedriverDirectory = (str(sys.path[0]))+"/../chromedriver.exe"
-	chromedriverDirectory = (str(sys.path[0]))+"/../IGCrawlerService/chromedriver.exe"
-
-
 
 class Restaurant:
 
@@ -56,8 +37,8 @@ class Restaurant:
 				self.phone = m.TakenAtLocation["phone"]
 			if self.coordinates == "" and m.TakenAtLocation["coordinates"] != "":
 				self.coordinates = m.TakenAtLocation["coordinates"]
-		geolocator = Nominatim(user_agent="geoapiExercises")
-		self.address = geolocator.reverse(str(self.coordinates[1]) + "," + str(self.coordinates[0]))
+		#geolocator = Nominatim(user_agent="geoapiExercises")
+		#self.address = geolocator.reverse(str(self.coordinates[1]) + "," + str(self.coordinates[0]))
 		self.topComments()
 		#self.main_image_url = self.getMainImageUrl()
 
@@ -194,10 +175,9 @@ class Restaurant:
 
 
 		
-def json2Restaurants(path):
+def json2Restaurants(input):
 
-	with open(path, 'r') as inputfile:
-		data = json.load(inputfile)
+	data = json.loads(input)
 
 	restaurant_list = []
 
@@ -212,7 +192,7 @@ def json2Restaurants(path):
 
 	return restaurant_list
 
-def Restaurants2json(restaurants, file):
+def Restaurants2json(restaurants):
 	out = '{'
 	for r in restaurants:
 		out += '"' + r.pk + '": ['
@@ -224,41 +204,9 @@ def Restaurants2json(restaurants, file):
 
 	out = out[:-2]
 	out += '}'
-	f = open(file, "w")
-	f.write(out)
-	f.close()
+	
+    return out
 
 def removeOldMedias(restaurants):
 	for r in restaurants:
 		r.removeOldMedias()
-
-def main():
-	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
-	for r in restaurants:
-		r.assignValues()
-
-	for r in restaurants:
-		pprint(vars(r))
-		for m in r.medias:
-			pprint(vars(m))
-
-	#Restaurants2json(restaurants, (str(sys.path[0]))+"/data/test_Restaurants2json.json")
-
-	#removeOldMedias(restaurants)
-
-	#for r in restaurants:
-		#pprint(vars(r))
-		#for m in r.medias:
-			#pprint(vars(m))
-
-	#for r in restaurants:
-		#r.rank()
-		#print(r.pk)
-		#print(r.name)
-		#r.printFormattedRanking()
-		#r.topComments()
-		#pprint(r.comments)
-		#print('\n')
-
-if __name__ == "__main__":
-	main()

@@ -1,9 +1,6 @@
-import os, sys
-import urllib.request
+import json
 import logging
 import boto3
-from botocore.exceptions import ClientError
-from S3Connection import S3Connection
 
 # S3 bucket name
 BUCKET_NAME = "foxybyteswe"
@@ -13,17 +10,12 @@ class RekognitionClient:
 	def __init__(self):
 		pass
 
-	def detectLabels(self, url):
-		urllib.request.urlretrieve(url, "tmp_image.jpg")
-
-		s3 = S3Connection(BUCKET_NAME)
-		s3.uploadFile("tmp_image.jpg", BUCKET_NAME, "images/tmp_image.jpg")
-
+	def detectLabels(self):
 		client = boto3.client('rekognition')
 		response = client.detect_labels(
 		Image = {
 			'S3Object': {
-				'Bucket': BUCKET_NAME,
+			'Bucket': BUCKET_NAME,
 				'Name': 'images/tmp_image.jpg',
 			},
 		},
@@ -31,8 +23,7 @@ class RekognitionClient:
 		MinConfidence = 0.5
 		)
 
-		s3.deleteFile("images/tmp_image.jpg")
-		os.remove("tmp_image.jpg")
+		#s3.deleteFile("tmp_image.jpg")
 		response = self.parseImageResponse(response)
 
 		return response
@@ -47,16 +38,9 @@ class RekognitionClient:
 			dict["Parents"] = item["Parents"]
 			list.append(dict)
 
-		print(list)
-
 		return list
 
-	def detectFacesEmotions(self, url):
-		urllib.request.urlretrieve(url, "tmp_image.jpg")
-
-		s3 = S3Connection(BUCKET_NAME)
-		s3.uploadFile("tmp_image.jpg", BUCKET_NAME, "images/tmp_image.jpg")
-
+	def detectFacesEmotions(self):
 		client = boto3.client('rekognition')
 		response = client.detect_faces(
 		Image = {
@@ -70,8 +54,7 @@ class RekognitionClient:
 		]
 		)
 
-		s3.deleteFile("images/tmp_image.jpg")
-		os.remove("tmp_image.jpg")
+		#s3.deleteFile("tmp_image.jpg")
 		response = self.parseEmotions(response)
 
 		return response
@@ -93,16 +76,15 @@ class RekognitionClient:
 
 			list.append(dict)
 
-		print(list)
-
 		return list
 
-def main():
-
+def lambda_handler(event, context):
+	
 	rkn = RekognitionClient()
+	ret = rkn.detectLabels()
 
-	rkn.detectLabels("https://thumbs.dreamstime.com/z/happy-little-boy-smiley-face-portrait-human-concept-freshness-133726078.jpg")
-	rkn.detectFacesEmotions("https://thumbs.dreamstime.com/z/happy-little-boy-smiley-face-portrait-human-concept-freshness-133726078.jpg")
-
-if __name__ == "__main__":
-	main()
+	return {
+		'statusCode': 200,
+		#'body': json.dumps(ret)
+		'body': ret
+	}
