@@ -78,6 +78,14 @@ class S3Connection:
 
 		print(response)
 
+	def writeFile(self, string, object, bucket = None):
+
+		if bucket is None:
+			bucket = self.default_bucket
+
+		s3_client = boto3.client('s3')
+		client.put_object(Body = string, Bucket = bucket, Key = object)
+
 def main():
 
 	s3 = S3Connection(BUCKET_NAME)
@@ -88,7 +96,8 @@ def main():
 	#s3.downloadFile("locationsData.json", (str(sys.path[0]))+"/../IGCrawlerService/crawler/data/Downloaded_locationsData.json")
 	#s3.deleteFile("locationsData.json")
 	#s3.listBucketObjetcs()
-	s3.readFile("locationsData.json")
+	#s3.readFile("locationsData.json")
+	s3.writeFile("Hi", "Test.txt")
 
 if __name__ == "__main__":
 	main()

@@ -83,4 +83,19 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+DROP TABLE IF EXISTS `favorite`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `favorite` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(50) NOT NULL,
+  `place_id` varchar(20) NOT NULL,
+  date_created timestamp default now(), 
+  date_updated timestamp default now() on update now(),
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (user_id) REFERENCES users(Email),
+  FOREIGN KEY (place_id) REFERENCES restaurants(Codice_pk)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 -- Dump completed on 2022-07-20 14:33:18
