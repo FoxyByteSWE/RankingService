@@ -1,4 +1,3 @@
-import json
 import sys, os
 import datetime
 from geopy.geocoders import Nominatim
@@ -27,7 +26,7 @@ else:
 
 
 
-class Restaurant:
+class Location:
 
 	def __init__(self, pk = 0, medias = [], name = "", category = "", address = "", website = "", phone = "", main_image_url = "", coordinates = "", ranking = -1, comments = []):
 		self.pk = pk
@@ -86,7 +85,7 @@ class Restaurant:
 
 		pos = neg = neu = mix = 0
 		weight_list = []
-		#print("Comments for restaurant " + r.pk)
+		#print("Comments for location " + r.pk)
 
 		for m in self.medias:
 			now = datetime.datetime.now()
@@ -194,27 +193,27 @@ class Restaurant:
 
 
 		
-def json2Restaurants(path):
+def json2Locations(path):
 
 	with open(path, 'r') as inputfile:
 		data = json.load(inputfile)
 
-	restaurant_list = []
+	location_list = []
 
-	for restaurant in data:
+	for location in data:
 		media_list = []
 
-		for media in data[restaurant]:
+		for media in data[location]:
 			m = Media(media["PostPartialURL"], media["MediaType"], media["TakenAtTime"], media["TakenAtLocation"], media["LikeCount"], media["CaptionText"], media["MediaURL"])
 			media_list.append(m)
 
-		restaurant_list.append(Restaurant(restaurant, media_list))
+		location_list.append(Location(location, media_list))
 
-	return restaurant_list
+	return location_list
 
-def Restaurants2json(restaurants, file):
+def Locations2json(locations, file):
 	out = '{'
-	for r in restaurants:
+	for r in locations:
 		out += '"' + r.pk + '": ['
 		for m in r.medias:
 			out += json.dumps(m.__dict__)
@@ -228,30 +227,30 @@ def Restaurants2json(restaurants, file):
 	f.write(out)
 	f.close()
 
-def removeOldMedias(restaurants):
-	for r in restaurants:
+def removeOldMedias(locations):
+	for r in locations:
 		r.removeOldMedias()
 
 def main():
-	restaurants = json2Restaurants((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
-	for r in restaurants:
+	locations = json2Locations((str(sys.path[0]))+"/../IGCrawlerService/crawler/data/locationsData.json")
+	for r in locations:
 		r.assignValues()
 
-	for r in restaurants:
+	for r in locations:
 		pprint(vars(r))
 		for m in r.medias:
 			pprint(vars(m))
 
-	#Restaurants2json(restaurants, (str(sys.path[0]))+"/data/test_Restaurants2json.json")
+	#Locations2json(locations, (str(sys.path[0]))+"/data/test_Locations2json.json")
 
-	#removeOldMedias(restaurants)
+	#removeOldMedias(locations)
 
-	#for r in restaurants:
+	#for r in locations:
 		#pprint(vars(r))
 		#for m in r.medias:
 			#pprint(vars(m))
 
-	#for r in restaurants:
+	#for r in locations:
 		#r.rank()
 		#print(r.pk)
 		#print(r.name)

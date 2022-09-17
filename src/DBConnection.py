@@ -15,7 +15,18 @@ from Restaurant import Restaurant
 # S3 bucket name
 BUCKET_NAME = "foxybyteswe"
 
-class DBConnection:
+class DBConnectionBase(type):	#SINGLETON
+
+	_instances = {}
+
+	def __call__(cls, *args, **kwargs):
+
+		if cls not in cls._instances:
+			instance = super().__call__(*args, **kwargs)
+			cls._instances[cls] = instance
+		return cls._instances[cls]
+
+class DBConnection(metaclass=DBConnectionBase):
 
 	def __init__(self, hostname = "localhost", user = "root", password = "root", server_connection = None, database_connection = None, s3 = None):
 		self.hostname = hostname
@@ -115,6 +126,7 @@ class DBConnection:
 				#print(row)
 		except Error as err:
 			print(f"Error: '{err}'")
+			print(f"Query: " + query)
 
 	def insertRestaurants(self, restaurants, connection = None):
 
