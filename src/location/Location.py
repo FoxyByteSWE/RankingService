@@ -13,6 +13,8 @@ from RekognitionClient import RekognitionClient
 
 import os, json, sys
 import sys, time, os, json
+
+"""
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -23,6 +25,7 @@ if os.name == 'posix':
 else:
 	#chromedriverDirectory = (str(sys.path[0]))+"/../chromedriver.exe"
 	chromedriverDirectory = (str(sys.path[0]))+"/../IGCrawlerService/chromedriver.exe"
+"""
 
 
 
