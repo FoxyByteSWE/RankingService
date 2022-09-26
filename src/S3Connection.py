@@ -29,6 +29,7 @@ class S3Connection(metaclass=S3ConnectionBase):
 		print('Existing buckets:')
 		for bucket in response['Buckets']:
 			print(f'  {bucket["Name"]}')
+		return response
 
 	def listBucketObjetcs(self, bucket = None):
 
@@ -36,8 +37,10 @@ class S3Connection(metaclass=S3ConnectionBase):
 			bucket = self.default_bucket
 
 		s3 = boto3.client('s3')
-		for key in s3.list_objects(Bucket=bucket)['Contents']:
+		response = s3.list_objects(Bucket=bucket)
+		for key in response['Contents']:
 			print(key['Key'])
+		return response
 
 	def uploadFile(self, file_name, bucket = None, object_name=None):
 
@@ -88,6 +91,7 @@ class S3Connection(metaclass=S3ConnectionBase):
 		)["Body"].read()
 
 		print(response)
+		return response
 
 	def writeFile(self, string, object, bucket = None):
 
@@ -95,7 +99,7 @@ class S3Connection(metaclass=S3ConnectionBase):
 			bucket = self.default_bucket
 
 		s3_client = boto3.client('s3')
-		client.put_object(Body = string, Bucket = bucket, Key = object)
+		s3_client.put_object(Body = string, Bucket = bucket, Key = object)
 
 def main():
 
@@ -108,7 +112,7 @@ def main():
 	#s3.deleteFile("locationsData.json")
 	#s3.listBucketObjetcs()
 	#s3.readFile("locationsData.json")
-	s3.writeFile("Hi", "Test.txt")
+	#s3.writeFile("Hi", "Test.txt")
 
 if __name__ == "__main__":
 	main()

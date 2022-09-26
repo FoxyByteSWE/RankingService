@@ -14,21 +14,6 @@ from RekognitionClient import RekognitionClient
 import os, json, sys
 import sys, time, os, json
 
-"""
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-if os.name == 'posix':
-	#chromedriverDirectory = (str(sys.path[0]))+"/../chromedriver"
-	chromedriverDirectory = (str(sys.path[0]))+"/../IGCrawlerService/chromedriver"
-else:
-	#chromedriverDirectory = (str(sys.path[0]))+"/../chromedriver.exe"
-	chromedriverDirectory = (str(sys.path[0]))+"/../IGCrawlerService/chromedriver.exe"
-"""
-
-
-
 class Location:
 
 	def __init__(self, pk = 0, medias = [], name = "", category = "", address = "", website = "", phone = "", main_image_url = "", coordinates = "", ranking = -1, comments = []):

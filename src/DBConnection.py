@@ -8,9 +8,10 @@ import pandas as pd
 from S3Connection import S3Connection
 
 sys.path.insert(1, (str(sys.path[0]))+"/../IGCrawlerService/crawler/")
+sys.path.insert(1, (str(sys.path[0]))+"/location/")
 
 from Media import Media
-from Restaurant import Restaurant
+from Location import Location
 
 # S3 bucket name
 BUCKET_NAME = "foxybyteswe"
@@ -124,18 +125,19 @@ class DBConnection(metaclass=DBConnectionBase):
 			#result = cursor.fetchall();
 			#for row in result:
 				#print(row)
+			return cursor.fetchall();
 		except Error as err:
 			print(f"Error: '{err}'")
 			print(f"Query: " + query)
 
-	def insertRestaurants(self, restaurants, connection = None):
+	def insertLocations(self, locations, connection = None):
 
 		if connection is None:
 			connection = self.database_connection
 
-		drop_restaurants = "DROP TABLE IF EXISTS restaurants;"
+		drop_locations = "DROP TABLE IF EXISTS locations;"
 
-		create_restaurants = """CREATE TABLE IF NOT EXISTS restaurants(
+		create_locations = """CREATE TABLE IF NOT EXISTS locations(
 			Codice_pk VARCHAR(20) PRIMARY KEY,
 			Nome VARCHAR(50) NOT NULL,
 			Categoria  VARCHAR(20),
@@ -148,11 +150,11 @@ class DBConnection(metaclass=DBConnectionBase):
 			Ranking FLOAT
 		)"""
 
-		self.executeQuery(drop_restaurants)
+		self.executeQuery(drop_locations)
 
-		self.executeQuery(create_restaurants)
+		self.executeQuery(create_locations)
 
-		for r in restaurants:
+		for r in locations:
 			#print(r.pk)
 			#print(r.name)
 			#r.printRanking()
@@ -191,13 +193,15 @@ class DBConnection(metaclass=DBConnectionBase):
 			if ranking == '""' or ranking == '"None", ':
 				ranking = 'NULL, '
 
-			insert_restaurant = "INSERT INTO restaurants VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + ');'
-			#print(insert_restaurant)
-			self.executeQuery(insert_restaurant)
+			insert_location = "INSERT INTO locations VALUES (" + pk + name + category + address + website + phone + main_image_url + lng + lat + ranking + ');'
+			#print(insert_location)
+			self.executeQuery(insert_location)
 
 	def createS3Connection(self):
 		self.s3 = S3Connection(BUCKET_NAME)
+		return self.s3
 
+	"""
 	def uploadDB(self, db, fileDirectory = None):
 
 		if fileDirectory is None:
@@ -222,6 +226,7 @@ class DBConnection(metaclass=DBConnectionBase):
 		self.createDatabase(db)
 		command = 'mysql -u root -proot ' + db + ' < ' + fileDirectory + db + '_database.sql'
 		os.system(command)
+	"""
 
 def main():
 
@@ -231,7 +236,7 @@ def main():
 	#db.createDatabase("michelinsocial")
 
 	#db.createDatabaseConnection("michelinsocial")
-	#db.insertRestaurants()
+	#db.insertLocations()
 
 	#db.uploadDB("michelinsocial")
 	#db.downloadDB("michelinsocial")

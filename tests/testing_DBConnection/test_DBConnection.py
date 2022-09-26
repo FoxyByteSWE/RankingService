@@ -4,6 +4,7 @@ import sys,os
 
 
 sys.path.insert(1, (str(sys.path[0]))+"/../../src/")
+sys.path.insert(1, (str(sys.path[0]))+"/../../src/location")
 from DBConnection import DBConnection
 
 
@@ -11,33 +12,34 @@ from DBConnection import DBConnection
 class TestDBConnection(unittest.TestCase):
 
 	def setUp(self):
-		self.connection = S3Connection("foxybyteswe")
+		#self.connection = DBConnection("michelinsocial.ctr0m4f2rgau.eu-west-1.rds.amazonaws.com", "admin", "#g7ct=MD")
+		self.connection = DBConnection()
 
-	def test_createServerConnection(self):
-		self.assertEqual(self.connection.list_buckets(), {"pk": 12345,
-													 "username": "marcouderzo",
-													 "isPrivate": False,
-													 "lastPostCheckedCode": "12AB34CD" })
+	def test1_createServerConnection(self):
+		conn = self.connection.createServerConnection();
+		self.assertNotEqual(conn, None)
 
-	def test_createDatabase(self):
-		self.assertEqual(self.connection.createDatabase(), 12345)
+	def test2_createDatabase(self):
+		self.connection.createDatabase("test");
+		conn = self.connection.server_connection
+		cursor = conn.cursor(buffered=True)
+		cursor.execute("show schemas;")
+		response = cursor.fetchall()
+		print(response)
+		self.assertTrue(('test',) in response)
 
-	def test_createDatabaseConnection(self):
-		self.assertEqual(self.connection.createDatabaseConnection(), "marcouderzo")
+	def test3_createDatabaseConnection(self):
+		conn = self.connection.createDatabaseConnection("test");
+		self.assertNotEqual(conn, None)
 
-	def test_executeQuery(self):
-		self.assertFalse(self.connection.executeQuery())
+	def test4_executeQuery(self):
+		response = self.connection.executeQuery("show tables;")
+		self.assertEqual(response, [])
 
-	def test_insertRestaurants(self):
-		self.assertEqual(self.connection.insertRestaurants(), "12AB34CD")
+	#def test5_insertLocations(self):
+		#self.assertEqual(self.connection.insertRestaurants(), "12AB34CD")
 	
-	def test_createS3Connection(self):
-		self.assertEqual(self.connection.createS3Connection(), "12AB34CD")
-
-	def test_uploadDB(self):
-		self.connection.uploadDB("newcode")
-
-	def test_downloadDB(self):
-		self.connection.downloadDB("newcode")
+	def test6_createS3Connection(self):
+		self.assertNotEqual(self.connection.createS3Connection(), None)
 
 unittest.main()
